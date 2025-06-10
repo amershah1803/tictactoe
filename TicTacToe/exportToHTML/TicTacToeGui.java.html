@@ -1,0 +1,381 @@
+<html>
+<head>
+<title>TicTacToeGui.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+TicTacToeGui.java</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">swing</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">ActionEvent</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">ActionListener</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">WindowAdapter</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">WindowEvent</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">TicTacToeGui </span><span class="s0">extends </span><span class="s1">JFrame </span><span class="s0">implements </span><span class="s1">ActionListener </span><span class="s2">{</span>
+    <span class="s0">private int </span><span class="s1">xscore</span><span class="s2">, </span><span class="s1">oscore</span><span class="s2">, </span><span class="s1">movecounter</span><span class="s2">;</span>
+
+    <span class="s0">private boolean </span><span class="s1">isPlayerone</span><span class="s2">;</span>
+
+    <span class="s0">private </span><span class="s1">JLabel turnlabel</span><span class="s2">, </span><span class="s1">scorelabel</span><span class="s2">, </span><span class="s1">resultlabel</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">JButton</span><span class="s2">[][] </span><span class="s1">board</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">JDialog resultdialog</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">TicTacToeGui</span><span class="s2">() {</span>
+
+        <span class="s0">super</span><span class="s2">(</span><span class="s3">&quot;Tic Tac Toe (Java String)&quot;</span><span class="s2">);</span>
+        <span class="s1">setSize</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">Frame_size</span><span class="s2">);</span>
+        <span class="s1">setDefaultCloseOperation</span><span class="s2">(</span><span class="s1">JFrame</span><span class="s2">.</span><span class="s1">EXIT_ON_CLOSE</span><span class="s2">);</span>
+        <span class="s1">setResizable</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+        <span class="s1">setLocationRelativeTo</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+        <span class="s1">setLayout</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+        <span class="s1">getContentPane</span><span class="s2">().</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BACKGROUND_COLOR</span><span class="s2">);</span>
+
+        <span class="s4">//init vars</span>
+        <span class="s1">cresteresultdialog</span><span class="s2">();</span>
+        <span class="s1">board </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">[</span><span class="s5">3</span><span class="s2">][</span><span class="s5">3</span><span class="s2">];</span>
+
+        <span class="s4">// player x starts first</span>
+        <span class="s1">isPlayerone </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s1">addGuiComponent</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">addGuiComponent</span><span class="s2">() {</span>
+
+
+        <span class="s4">//barlabel</span>
+
+        <span class="s1">JLabel barlabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">();</span>
+        <span class="s1">barlabel</span><span class="s2">.</span><span class="s1">setOpaque</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+        <span class="s1">barlabel</span><span class="s2">.</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BAR_COLOR</span><span class="s2">);</span>
+        <span class="s1">barlabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">0</span><span class="s2">, </span><span class="s5">0</span><span class="s2">, </span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">Frame_size</span><span class="s2">.</span><span class="s1">width</span><span class="s2">, </span><span class="s5">25</span><span class="s2">);</span>
+
+        <span class="s4">//turnlabel</span>
+
+        <span class="s1">turnlabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">X_LABEL</span><span class="s2">);</span>
+        <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setHorizontalAlignment</span><span class="s2">(</span><span class="s1">SwingConstants</span><span class="s2">.</span><span class="s1">CENTER</span><span class="s2">);</span>
+        <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setFont</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Font</span><span class="s2">(</span><span class="s3">&quot;Dialog&quot;</span><span class="s2">, </span><span class="s1">Font</span><span class="s2">.</span><span class="s1">PLAIN</span><span class="s2">, </span><span class="s5">40</span><span class="s2">));</span>
+        <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setPreferredSize</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Dimension</span><span class="s2">(</span><span class="s5">100</span><span class="s2">, </span><span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">getPreferredSize</span><span class="s2">().</span><span class="s1">height</span><span class="s2">));</span>
+        <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setOpaque</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+        <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">X_COLOR</span><span class="s2">);</span>
+        <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setForeground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BOARD_COLOR</span><span class="s2">);</span>
+        <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span>
+                <span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">Frame_size</span><span class="s2">.</span><span class="s1">width </span><span class="s2">- </span><span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">getPreferredSize</span><span class="s2">().</span><span class="s1">width</span><span class="s2">) / </span><span class="s5">2</span><span class="s2">,</span>
+                <span class="s5">0</span><span class="s2">,</span>
+                <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">getPreferredSize</span><span class="s2">().</span><span class="s1">width</span><span class="s2">,</span>
+                <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">getPreferredSize</span><span class="s2">().</span><span class="s1">height</span>
+        <span class="s2">);</span>
+
+        <span class="s4">//score label</span>
+
+        <span class="s1">scorelabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">SCORE_LABEL</span><span class="s2">);</span>
+        <span class="s1">scorelabel</span><span class="s2">.</span><span class="s1">setFont</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Font</span><span class="s2">(</span><span class="s3">&quot;Dialog&quot;</span><span class="s2">, </span><span class="s1">Font</span><span class="s2">.</span><span class="s1">PLAIN</span><span class="s2">, </span><span class="s5">40</span><span class="s2">));</span>
+        <span class="s1">scorelabel</span><span class="s2">.</span><span class="s1">setHorizontalAlignment</span><span class="s2">(</span><span class="s1">SwingConstants</span><span class="s2">.</span><span class="s1">CENTER</span><span class="s2">);</span>
+        <span class="s1">scorelabel</span><span class="s2">.</span><span class="s1">setForeground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BOARD_COLOR</span><span class="s2">);</span>
+        <span class="s1">scorelabel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">0</span><span class="s2">,</span>
+                <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">getY</span><span class="s2">() + </span><span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">getPreferredSize</span><span class="s2">().</span><span class="s1">height </span><span class="s2">+ </span><span class="s5">25</span><span class="s2">,</span>
+                <span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">Frame_size</span><span class="s2">.</span><span class="s1">width</span><span class="s2">,</span>
+                <span class="s1">scorelabel</span><span class="s2">.</span><span class="s1">getPreferredSize</span><span class="s2">().</span><span class="s1">height</span>
+        <span class="s2">);</span>
+
+        <span class="s4">//gridlayout</span>
+        <span class="s1">GridLayout gridlayout </span><span class="s2">= </span><span class="s0">new </span><span class="s1">GridLayout</span><span class="s2">(</span><span class="s5">3</span><span class="s2">, </span><span class="s5">3</span><span class="s2">);</span>
+        <span class="s1">JPanel boardpanel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JPanel</span><span class="s2">(</span><span class="s1">gridlayout</span><span class="s2">);</span>
+        <span class="s1">boardpanel</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span><span class="s5">0</span><span class="s2">,</span>
+                <span class="s1">scorelabel</span><span class="s2">.</span><span class="s1">getY</span><span class="s2">() + </span><span class="s1">scorelabel</span><span class="s2">.</span><span class="s1">getPreferredSize</span><span class="s2">().</span><span class="s1">height </span><span class="s2">+ </span><span class="s5">35</span><span class="s2">,</span>
+                <span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BOARD_SIZE</span><span class="s2">.</span><span class="s1">width</span><span class="s2">,</span>
+                <span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BOARD_SIZE</span><span class="s2">.</span><span class="s1">height</span>
+        <span class="s2">);</span>
+
+
+        <span class="s4">//create board</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s1">board</span><span class="s2">.</span><span class="s1">length</span><span class="s2">; </span><span class="s1">i</span><span class="s2">++) {</span>
+            <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">j </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">j </span><span class="s2">&lt; </span><span class="s1">board</span><span class="s2">[</span><span class="s1">i</span><span class="s2">].</span><span class="s1">length</span><span class="s2">; </span><span class="s1">j</span><span class="s2">++) {</span>
+                <span class="s1">JButton button </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">();</span>
+                <span class="s1">button</span><span class="s2">.</span><span class="s1">setFont</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Font</span><span class="s2">(</span><span class="s3">&quot;Dialog&quot;</span><span class="s2">, </span><span class="s1">Font</span><span class="s2">.</span><span class="s1">PLAIN</span><span class="s2">, </span><span class="s5">100</span><span class="s2">));</span>
+                <span class="s1">button</span><span class="s2">.</span><span class="s1">setPreferredSize</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BUTTON_SIZE</span><span class="s2">);</span>
+                <span class="s1">button</span><span class="s2">.</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BACKGROUND_COLOR</span><span class="s2">);</span>
+                <span class="s1">button</span><span class="s2">.</span><span class="s1">setBorder</span><span class="s2">(</span><span class="s1">BorderFactory</span><span class="s2">.</span><span class="s1">createLineBorder</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BOARD_COLOR</span><span class="s2">));</span>
+                <span class="s1">button</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+                <span class="s1">board</span><span class="s2">[</span><span class="s1">i</span><span class="s2">][</span><span class="s1">j</span><span class="s2">] = </span><span class="s1">button</span><span class="s2">;</span>
+                <span class="s1">boardpanel</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">board</span><span class="s2">[</span><span class="s1">i</span><span class="s2">][</span><span class="s1">j</span><span class="s2">]);</span>
+            <span class="s2">}</span>
+
+
+        <span class="s2">}</span>
+
+        <span class="s4">//reset button</span>
+        <span class="s1">JButton resetbutton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s3">&quot;Reset&quot;</span><span class="s2">);</span>
+        <span class="s1">resetbutton</span><span class="s2">.</span><span class="s1">setFont</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Font</span><span class="s2">(</span><span class="s3">&quot;Dialog&quot;</span><span class="s2">, </span><span class="s1">Font</span><span class="s2">.</span><span class="s1">PLAIN</span><span class="s2">, </span><span class="s5">25</span><span class="s2">));</span>
+        <span class="s1">resetbutton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+        <span class="s1">resetbutton</span><span class="s2">.</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BOARD_COLOR</span><span class="s2">);</span>
+        <span class="s1">resetbutton</span><span class="s2">.</span><span class="s1">setBounds</span><span class="s2">(</span>
+                <span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">Frame_size</span><span class="s2">.</span><span class="s1">width </span><span class="s2">- -</span><span class="s1">resetbutton</span><span class="s2">.</span><span class="s1">getPreferredSize</span><span class="s2">().</span><span class="s1">width</span><span class="s2">) / </span><span class="s5">2</span><span class="s2">,</span>
+                <span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">Frame_size</span><span class="s2">.</span><span class="s1">height </span><span class="s2">- </span><span class="s5">100</span><span class="s2">,</span>
+                <span class="s1">resetbutton</span><span class="s2">.</span><span class="s1">getPreferredSize</span><span class="s2">().</span><span class="s1">width</span><span class="s2">,</span>
+                <span class="s1">resetbutton</span><span class="s2">.</span><span class="s1">getPreferredSize</span><span class="s2">().</span><span class="s1">height</span>
+        <span class="s2">);</span>
+
+        <span class="s1">getContentPane</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">turnlabel</span><span class="s2">);</span>
+        <span class="s1">getContentPane</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">barlabel</span><span class="s2">);</span>
+        <span class="s1">getContentPane</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">scorelabel</span><span class="s2">);</span>
+        <span class="s1">getContentPane</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">boardpanel</span><span class="s2">);</span>
+        <span class="s1">getContentPane</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">resetbutton</span><span class="s2">);</span>
+
+
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">cresteresultdialog</span><span class="s2">() {</span>
+        <span class="s1">resultdialog </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JDialog</span><span class="s2">();</span>
+        <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">getContentPane</span><span class="s2">().</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BACKGROUND_COLOR</span><span class="s2">);</span>
+        <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setResizable</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+        <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setTitle</span><span class="s2">(</span><span class="s3">&quot;Result&quot;</span><span class="s2">);</span>
+        <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setSize</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">RESULT_DIALOG_SIZE</span><span class="s2">);</span>
+        <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setLocationRelativeTo</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+        <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setModal</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+        <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setLayout</span><span class="s2">(</span><span class="s0">new </span><span class="s1">GridLayout</span><span class="s2">(</span><span class="s5">2</span><span class="s2">, </span><span class="s5">1</span><span class="s2">));</span>
+        <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">addWindowListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">WindowAdapter</span><span class="s2">() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">windowClosing</span><span class="s2">(</span><span class="s1">WindowEvent e</span><span class="s2">) {</span>
+                <span class="s1">resetgame</span><span class="s2">();</span>
+            <span class="s2">}</span>
+        <span class="s2">});</span>
+
+        <span class="s4">//resultlabel</span>
+        <span class="s1">resultlabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JLabel</span><span class="s2">();</span>
+        <span class="s1">resultlabel</span><span class="s2">.</span><span class="s1">setFont</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Font</span><span class="s2">(</span><span class="s3">&quot;Dialog&quot;</span><span class="s2">, </span><span class="s1">Font</span><span class="s2">.</span><span class="s1">BOLD</span><span class="s2">, </span><span class="s5">18</span><span class="s2">));</span>
+        <span class="s1">resultlabel</span><span class="s2">.</span><span class="s1">setForeground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BOARD_COLOR</span><span class="s2">);</span>
+        <span class="s1">resultlabel</span><span class="s2">.</span><span class="s1">setHorizontalAlignment</span><span class="s2">(</span><span class="s1">SwingConstants</span><span class="s2">.</span><span class="s1">CENTER</span><span class="s2">);</span>
+
+        <span class="s4">//restart button</span>
+        <span class="s1">JButton restartbutton </span><span class="s2">= </span><span class="s0">new </span><span class="s1">JButton</span><span class="s2">(</span><span class="s3">&quot;Play Again&quot;</span><span class="s2">);</span>
+        <span class="s1">restartbutton</span><span class="s2">.</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">BOARD_COLOR</span><span class="s2">);</span>
+        <span class="s1">restartbutton</span><span class="s2">.</span><span class="s1">addActionListener</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+
+        <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">resultlabel</span><span class="s2">);</span>
+        <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">restartbutton</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">actionPerformed</span><span class="s2">(</span><span class="s1">ActionEvent e</span><span class="s2">) {</span>
+        <span class="s1">String command </span><span class="s2">= </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getActionCommand</span><span class="s2">();</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">command</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;Reset&quot;</span><span class="s2">) || </span><span class="s1">command</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;Play Again&quot;</span><span class="s2">)) {</span>
+            <span class="s4">//reset the game</span>
+            <span class="s1">resetgame</span><span class="s2">();</span>
+
+            <span class="s4">// only reset the score when pressing reset</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">command</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;Reset&quot;</span><span class="s2">))</span>
+                <span class="s1">xscore </span><span class="s2">= </span><span class="s1">oscore </span><span class="s2">= </span><span class="s5">0</span><span class="s2">;</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">command</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;Play Again&quot;</span><span class="s2">))</span>
+                <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s4">//PLAYER MOVE</span>
+            <span class="s1">JButton button </span><span class="s2">= (</span><span class="s1">JButton</span><span class="s2">) </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getSource</span><span class="s2">();</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">button</span><span class="s2">.</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;&quot;</span><span class="s2">)) {</span>
+                <span class="s1">movecounter</span><span class="s2">++;</span>
+
+                <span class="s4">// mark the button with x/o</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">isPlayerone</span><span class="s2">) {</span>
+                    <span class="s4">//player one x</span>
+                    <span class="s1">button</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">X_LABEL</span><span class="s2">);</span>
+                    <span class="s1">button</span><span class="s2">.</span><span class="s1">setForeground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">X_COLOR</span><span class="s2">);</span>
+
+                    <span class="s4">//update turen label</span>
+                    <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">O_LABEL</span><span class="s2">);</span>
+                    <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">O_COLOR</span><span class="s2">);</span>
+
+                    <span class="s4">//update turns now</span>
+                    <span class="s1">isPlayerone </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+                <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                    <span class="s4">//player o turn</span>
+                    <span class="s1">button</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">O_LABEL</span><span class="s2">);</span>
+                    <span class="s1">button</span><span class="s2">.</span><span class="s1">setForeground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">O_COLOR</span><span class="s2">);</span>
+
+
+                    <span class="s4">//update turnlabel</span>
+                    <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">X_LABEL</span><span class="s2">);</span>
+                    <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">X_COLOR</span><span class="s2">);</span>
+
+                    <span class="s4">//update turn</span>
+                    <span class="s1">isPlayerone </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+                <span class="s2">}</span>
+
+                <span class="s4">//check conditions of win</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">isPlayerone</span><span class="s2">) {</span>
+                    <span class="s4">//to check to see if last move was from 0</span>
+                    <span class="s1">checkowin</span><span class="s2">();</span>
+                <span class="s2">}</span>
+                <span class="s2">{</span>
+                    <span class="s4">// CHECK TT]O SEE IF LAST MOVE WAS FROM X FOR WINNING</span>
+                    <span class="s1">checkxwin</span><span class="s2">();</span>
+                <span class="s2">}</span>
+
+                <span class="s4">// check for draw</span>
+                <span class="s1">checkdraw</span><span class="s2">();</span>
+
+                <span class="s1">scorelabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s3">&quot;X: &quot; </span><span class="s2">+ </span><span class="s1">xscore </span><span class="s2">+ </span><span class="s3">&quot; | O: &quot; </span><span class="s2">+ </span><span class="s1">oscore</span><span class="s2">);</span>
+
+            <span class="s2">}</span>
+
+            <span class="s1">repaint</span><span class="s2">();</span>
+            <span class="s1">revalidate</span><span class="s2">();</span>
+        <span class="s2">}</span>
+
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">checkxwin</span><span class="s2">() {</span>
+        <span class="s1">String result </span><span class="s2">= </span><span class="s3">&quot;X wins&quot;</span><span class="s2">;</span>
+
+        <span class="s4">//check rows</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">row </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">row </span><span class="s2">&lt; </span><span class="s1">board</span><span class="s2">.</span><span class="s1">length</span><span class="s2">; </span><span class="s1">row</span><span class="s2">++) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">board</span><span class="s2">[</span><span class="s1">row</span><span class="s2">][</span><span class="s5">0</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s1">row</span><span class="s2">][</span><span class="s5">1</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s1">row</span><span class="s2">][</span><span class="s5">2</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">)) {</span>
+                <span class="s1">resultlabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">result</span><span class="s2">);</span>
+
+                <span class="s4">//display result dialog</span>
+                <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+
+                <span class="s4">//update score</span>
+                <span class="s1">xscore</span><span class="s2">++;</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s4">//check columns</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">col </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">col </span><span class="s2">&lt; </span><span class="s1">board</span><span class="s2">.</span><span class="s1">length</span><span class="s2">; </span><span class="s1">col</span><span class="s2">++) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">board</span><span class="s2">[</span><span class="s5">0</span><span class="s2">][</span><span class="s1">col</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s5">1</span><span class="s2">][</span><span class="s1">col</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s5">2</span><span class="s2">][</span><span class="s1">col</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">)) {</span>
+                <span class="s1">resultlabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">result</span><span class="s2">);</span>
+
+                <span class="s4">//display result dialog</span>
+                <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+
+                <span class="s4">//update score</span>
+                <span class="s1">xscore</span><span class="s2">++;</span>
+
+            <span class="s2">}</span>
+
+        <span class="s2">}</span>
+
+        <span class="s4">//check diagonals</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">board</span><span class="s2">[</span><span class="s5">0</span><span class="s2">][</span><span class="s5">0</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s5">1</span><span class="s2">][</span><span class="s5">1</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s5">2</span><span class="s2">][</span><span class="s5">2</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">)) {</span>
+            <span class="s1">resultlabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">result</span><span class="s2">);</span>
+
+            <span class="s4">//display result dialog</span>
+            <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+
+            <span class="s4">//update score</span>
+            <span class="s1">xscore</span><span class="s2">++;</span>
+
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">board</span><span class="s2">[</span><span class="s5">2</span><span class="s2">][</span><span class="s5">0</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s5">1</span><span class="s2">][</span><span class="s5">1</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s5">0</span><span class="s2">][</span><span class="s5">2</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">)) {</span>
+
+            <span class="s1">resultlabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">result</span><span class="s2">);</span>
+
+            <span class="s4">//display result dialog</span>
+            <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+
+            <span class="s4">//update score</span>
+            <span class="s1">xscore</span><span class="s2">++;</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">private void </span><span class="s1">checkowin</span><span class="s2">() {</span>
+        <span class="s1">String result </span><span class="s2">= </span><span class="s3">&quot;O wins&quot;</span><span class="s2">;</span>
+
+        <span class="s4">//check rows</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">row </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">row </span><span class="s2">&lt; </span><span class="s1">board</span><span class="s2">.</span><span class="s1">length</span><span class="s2">; </span><span class="s1">row</span><span class="s2">++) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">board</span><span class="s2">[</span><span class="s1">row</span><span class="s2">][</span><span class="s5">0</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;O&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s1">row</span><span class="s2">][</span><span class="s5">1</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;O&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s1">row</span><span class="s2">][</span><span class="s5">2</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;O&quot;</span><span class="s2">)) {</span>
+
+                <span class="s1">resultlabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">result</span><span class="s2">);</span>
+
+                <span class="s4">//display result dialog</span>
+                <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+
+                <span class="s4">//update score</span>
+                <span class="s1">oscore</span><span class="s2">++;</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s4">//check columns</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">col </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">col </span><span class="s2">&lt; </span><span class="s1">board</span><span class="s2">.</span><span class="s1">length</span><span class="s2">; </span><span class="s1">col</span><span class="s2">++) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">board</span><span class="s2">[</span><span class="s5">0</span><span class="s2">][</span><span class="s1">col</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;O&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s5">1</span><span class="s2">][</span><span class="s1">col</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;O&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s5">2</span><span class="s2">][</span><span class="s1">col</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;O&quot;</span><span class="s2">)) {</span>
+                <span class="s1">resultlabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">result</span><span class="s2">);</span>
+
+                <span class="s4">//display result dialog</span>
+                <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+
+                <span class="s4">//update score</span>
+                <span class="s1">oscore</span><span class="s2">++;</span>
+            <span class="s2">}</span>
+
+        <span class="s2">}</span>
+
+        <span class="s4">//check diagonals</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">board</span><span class="s2">[</span><span class="s5">0</span><span class="s2">][</span><span class="s5">0</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;O&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s5">1</span><span class="s2">][</span><span class="s5">1</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;O&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s5">2</span><span class="s2">][</span><span class="s5">2</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;O&quot;</span><span class="s2">)) {</span>
+            <span class="s1">resultlabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">result</span><span class="s2">);</span>
+
+            <span class="s4">//display result dialog</span>
+            <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+
+            <span class="s4">//update score</span>
+            <span class="s1">oscore</span><span class="s2">++;</span>
+
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">board</span><span class="s2">[</span><span class="s5">2</span><span class="s2">][</span><span class="s5">0</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;O&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s5">1</span><span class="s2">][</span><span class="s5">1</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;O&quot;</span><span class="s2">) &amp;&amp; </span><span class="s1">board</span><span class="s2">[</span><span class="s5">0</span><span class="s2">][</span><span class="s5">2</span><span class="s2">].</span><span class="s1">getText</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;O&quot;</span><span class="s2">)) {</span>
+
+            <span class="s1">resultlabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">result</span><span class="s2">);</span>
+
+            <span class="s4">//display result dialog</span>
+            <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+
+            <span class="s4">//update score</span>
+            <span class="s1">oscore</span><span class="s2">++;</span>
+        <span class="s2">}</span>
+
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">checkdraw</span><span class="s2">(){</span>
+        <span class="s4">//if there are total of 9 moves then draw and no player has won yet</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">movecounter </span><span class="s2">&gt;= </span><span class="s5">9</span><span class="s2">){</span>
+            <span class="s1">resultlabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s3">&quot;Draw&quot;</span><span class="s2">);</span>
+            <span class="s1">resultdialog</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">private void </span><span class="s1">resetgame</span><span class="s2">() {</span>
+        <span class="s4">//reset player back</span>
+        <span class="s1">isPlayerone </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+        <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">X_LABEL</span><span class="s2">);</span>
+        <span class="s1">turnlabel</span><span class="s2">.</span><span class="s1">setBackground</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">X_COLOR</span><span class="s2">);</span>
+
+        <span class="s4">//rset score</span>
+        <span class="s1">scorelabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">CommonConstants</span><span class="s2">.</span><span class="s1">SCORE_LABEL</span><span class="s2">);</span>
+
+        <span class="s1">movecounter </span><span class="s2">= </span><span class="s5">0</span><span class="s2">;</span>
+
+        <span class="s4">//reset board</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s1">board</span><span class="s2">.</span><span class="s1">length</span><span class="s2">; </span><span class="s1">i</span><span class="s2">++) {</span>
+            <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">j </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">j </span><span class="s2">&lt; </span><span class="s1">board</span><span class="s2">[</span><span class="s1">i</span><span class="s2">].</span><span class="s1">length </span><span class="s2">; </span><span class="s1">j</span><span class="s2">++) {</span>
+                <span class="s1">board</span><span class="s2">[</span><span class="s1">i</span><span class="s2">][</span><span class="s1">j</span><span class="s2">].</span><span class="s1">setText</span><span class="s2">(</span><span class="s3">&quot;&quot;</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
